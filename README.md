@@ -1,5 +1,5 @@
 
-# ![Sypha C Logo](./src/assets/logo.png) Sypha C - Hybrid AI Assistant
+# Sypha C - Hybrid AI Assistant
 
 **Sypha C** is a **desktop AI assistant** that combines **Hugging Face Whisper** for high-quality speech-to-text with **local Ollama Gemma 2B** for text generation. This hybrid approach ensures professional-grade transcription while keeping AI responses private and local.
 
@@ -90,3 +90,4 @@ npm start
    - Transcribe speech to text
    - Generate AI responses using local Gemma 2B
    - Display responses on screen
+
