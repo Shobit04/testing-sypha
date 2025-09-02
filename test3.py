@@ -379,22 +379,26 @@ def audio_processing_loop():
                     if buffer_duration >= MIN_SPEECH_DURATION:
                         if not is_silent(buffer):
                             gui.update_status("🎙️ Speech detected, processing...", 'orange')
-                            
+
                             # Transcribe the audio
                             transcript = transcribe_audio(buffer)
-                            
+
                             if transcript:
                                 speaker_name = f"Speaker {speaker_count}"
                                 gui.add_conversation(speaker_name, transcript)
                                 recent_speech.append(f"{speaker_name}: {transcript}")
-                                
-                                speaker_count = (speaker_count % 5) + 1  # Cycle through 5 speakers
+
+                                # Instantly get AI response for each question
+                                gui.update_status("🤖 Thinking...", 'blue')
+                                ai_response = get_ai_help([f"{speaker_name}: {transcript}"])
+                                gui.show_ai_response(ai_response)
+                                gui.update_status("🎧 Listening to conversation...", 'green')
+
+                                speaker_count = (speaker_count % 2) + 1  # Cycle through 2 speakers
                                 last_activity_time = current_time
-                            
+
                             # Clear buffer after processing
                             buffer = np.array([], dtype=np.int16)
-                            gui.update_status("🎧 Listening to conversation...", 'green')
-                        
                         elif buffer_duration > 10:  # Clear old silent audio
                             buffer = buffer[-int(2 * SAMPLE_RATE):]  # Keep last 2 seconds
                     
@@ -468,6 +472,7 @@ def main():
         if not response:
             return
     
+
     # Setup hotkeys
     hotkey_success = setup_hotkeys()
     if not hotkey_success:
